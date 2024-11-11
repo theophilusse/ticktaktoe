@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>Cours React - Events</title>
+        <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+        <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+        <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script> 
+    </head>
+    <body>
+        <div id="root"></div>
+
+        <script type="text/babel">
+            class Cell extends React.Component
+            {
+                constructor(props)
+                {
+                    super(props);
+                    this.state = {className: props.className};
+                    this.handleCell = this.callbackCell.bind(this);
+                    this.position = props.position;
+                }
+
+                callbackCell()
+                {
+                    this.setState(state=>({className: player}));
+                    //alert("Cell !!");
+                }
+
+                render()
+                {
+                    return (
+                        <div className={this.state.className + ' Cell ' + this.position} onClick={this.handleCell}>
+                        </div>
+                    );
+                }
+            }
+
+            class Board extends React.Component
+            {
+                constructor(props)
+                {
+                    super(props);
+                    this.state = {className: props.className, won: playerId.none};
+                    this.handleBoard = this.callbackBoard.bind(this);
+                }
+
+                buildBoard()
+                {
+                    let boardName = [ 'upLeft', 'up', 'upRight', 'midLeft', 'mid', 'midRight', 'botLeft', 'bot', 'botRight' ];
+
+                    return (boardName.map((idName,i) => (<Cell key={i} className={'Empty'} position={idName}/>)));
+                }
+
+                callbackBoard()
+                {
+                    //alert("Board !!");
+                }
+
+                render()
+                {
+                    return (
+                        <div className={this.state.className} onClick={this.handleBoard}>
+                            {this.buildBoard()}
+                        </div>
+                    );
+                }
+            }
+
+            class TickTakToe extends React.Component
+            {
+                constructor(props)
+                {
+                    super(props);
+                    this.state = {hasWon: false};
+                    this.handleTickTackToe = this.callBackTickTacToe.bind(this);
+                }
+
+                callBackTickTacToe()
+                {
+                    //alert("TickTacToe !!");
+                    if (1 == 0) // TODO Valid BOARD ???
+                        return ;
+                    if (player == playerId.circle)
+                        player = playerId.cross;
+                    else
+                        player = playerId.circle;
+                }
+
+                buildBoard()
+                {
+                    let boardName = [ 'upLeft', 'up', 'upRight', 'midLeft', 'mid', 'midRight', 'botLeft', 'bot', 'botRight' ];
+
+                    return (
+                        boardName.map((idName,i) =>
+                        (<Board
+                            key={i}
+                            className={'Board Cell ' + idName}
+                            onClick={this.handleTickTackToe}
+                        />)
+                    ));
+                }
+
+                render()
+                {
+                    return (
+                        <div className="TickTakToe" onClick={this.handleTickTackToe}>
+                            {this.buildBoard()}
+                        </div>
+                    );
+                }
+            }
+
+            // --------------------------------- .DATA
+
+            var player; // Who's playing
+            var playerId = { // Macrodefinitions
+                none: "Empty",
+                cross: "Cross",
+                circle: "Circle"
+            };
+            var nextMove = -1; // Next move allowed (Board ID, -1 = no restriction)
+
+            function App()
+            {
+                player = playerId.cross;
+                // ----------------------------- INIT .DATA
+                return (
+                    <TickTakToe />
+                );
+            }
+
+            const root = ReactDOM.createRoot(document.getElementById('root'));
+            root.render(<App />);
+
+        </script>
+        <style>
+            html, body {
+                margin: 0;
+                padding: 0;
+                width: 100%;
+                height: 100%;
+            }
+
+            .Cross {
+                background-image: url('asset/cross.png')
+            }
+
+            .Circle {
+                background-image: url('asset/circle.png')
+            }
+
+            .Empty {
+                background-color: white;
+            }
+
+            .Cell {
+                border: 1px solid black;
+                width: 32%;
+                height: 32%;
+                display: inline-block;
+            }
+
+            .Board {
+                border: 3px solid black !important;
+            }
+
+            .TickTakToe {
+                width: 500px;
+                height: 500px;
+                margin: auto;
+            }
+        </style>
+    </body>
+</html>
